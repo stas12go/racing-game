@@ -42,6 +42,19 @@ function moveRoad() {
 function moveEnemy() {
 	let enemies = document.querySelectorAll('.enemy');
 	enemies.forEach(function (enemy) {
+		let carRect = car.getBoundingClientRect();
+		let enemyRect = enemy.getBoundingClientRect();
+
+		if (carRect.top <= enemyRect.bottom &&
+			carRect.right >= enemyRect.left &&
+			carRect.left <= enemyRect.right &&
+			carRect.bottom >= enemyRect.top) {
+			setting.start = false;
+			start.classList.remove('hide');
+			start.style.top = score.offsetHeight + 'px';
+			console.log(score.style.top);
+		}
+		
 		enemy.y += setting.speed;
 		enemy.style.top = enemy.y + 'px';
 		if (enemy.y >= (gameArea.offsetHeight)) {
@@ -53,6 +66,8 @@ function moveEnemy() {
 
 function playGame() {
 	if (setting.start) {
+		setting.score += setting.speed;
+		score.textContent = 'SCORE: ' + setting.score;
 		moveRoad();
 		moveEnemy();
 		if (keys.ArrowLeft && setting.x > 0) {
@@ -77,8 +92,15 @@ function startGame() {
 	start.classList.add('hide');
 	gameArea.classList.remove('hide');
 
+	gameArea.innerHTML = '';
+
 	setting.start = true;
+	setting.score = 0;
+
 	gameArea.appendChild(car);
+	car.style.left = (gameArea.offsetWidth - car.offsetWidth) / 2 + 'px';
+	car.style.top = gameArea.offsetHeight - car.offsetHeight - 10 + 'px';
+	
 	setting.x = car.offsetLeft;
 	setting.y = car.offsetTop;
 
@@ -92,14 +114,15 @@ function startGame() {
 		gameArea.appendChild(line);
 	}
 	
-	for (let i = -1, block = 0; (i * block) < gameArea.offsetHeight; i++) {
+	for (let i = -1	, block = 0; (i * block) < gameArea.offsetHeight; i++) {
 		const enemy = document.createElement('div');
 		enemy.classList.add('enemy');
 		block = gameArea.offsetHeight / setting.traffic;
-		enemy.style.top = (i * block) + 'px';
+		enemy.style.top = (i * block - gameArea.offsetHeight) + 'px';
+		console.log(enemy.style.top);
 		gameArea.appendChild(enemy);
 		getRandomCar(enemy);
-		enemy.y = i * block;
+		enemy.y = i * block - gameArea.offsetHeight;
 	}
 	
 	requestAnimationFrame(playGame);
