@@ -6,9 +6,17 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <div class="score"></div>
+    
+    <div class="score">
+        <!-- <audio src="https://www.ostmusic.org/sound/track/dalnoboyshchiki_2/%D0%A5%D0%B8%D0%BC%D0%B5%D1%80%D0%B0.mp3" controls></audio> -->
+    </div>
     <div class="game">
-        <button class="start">Чтобы начать игру кликни сюда!</button>
+        <div class="menu">
+            <h2>Выбери сложность:</h2>
+            <button class="start" data-difficulty="3">Ученик автошколы</button>
+            <button class="start" data-difficulty="5">Опытный водитель</button>
+            <button class="start" data-difficulty="7">Чемпион формулы-1</button>
+        </div>
         <div class="gameArea hide"></div>
     </div>
     <script src="./main.js">
